@@ -8,9 +8,24 @@ variables:
   azureSubscription: 'AuthDevOps'
   functionAppName: 'DevOpsauth32'
   resourceGroupName: 'DevOpsauth32_group'
-  packagePath: '$(System.DefaultWorkingDirectory)/src'
+  packagePath: '$(System.DefaultWorkingDirectory)/src.zip'
 
 steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'  # Use the version your app needs
+  displayName: 'Install Node.js'
+
+- script: |
+    cd src
+    npm install
+  displayName: 'Install dependencies'
+
+- script: |
+    cd src
+    zip -r ../src.zip .
+  displayName: 'Zip Function App'
+
 - task: AzureFunctionApp@1
   inputs:
     azureSubscription: $(azureSubscription)
