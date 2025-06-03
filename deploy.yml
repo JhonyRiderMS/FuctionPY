@@ -5,7 +5,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  azureSubscription: '0ef4eff1-f9d2-412e-8788-9d731f428cfb'
+  azureSubscription: 'AuthDevOps'
   functionAppName: 'DevOpsauth32'
   resourceGroupName: 'DevOpsauth32_group'
   packagePath: '$(System.DefaultWorkingDirectory)/src'
