@@ -36,4 +36,4 @@ steps:
     resourceGroupName: $(resourceGroupName)
     package: $(packagePath)
     enableManagedIdentity: true
-    deploymentMethod: 'zipDeploy'
+    deploymentMethod: 'runFromPackage'
