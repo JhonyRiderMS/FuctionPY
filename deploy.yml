@@ -6,8 +6,8 @@ pool:
 
 variables:
   azureSubscription: 'AuthDevOps'
-  functionAppName: 'PyFunc265'
-  resourceGroupName: 'PyFunc265_group'
+  functionAppName: 'newfuncpyprem'
+  resourceGroupName: 'newfuncpyprem_group'
   packagePath: '$(Build.ArtifactStagingDirectory)/function.zip'
 
 steps:
@@ -36,4 +36,4 @@ steps:
     resourceGroupName: $(resourceGroupName)
     package: $(packagePath)
     enableManagedIdentity: true
-    deploymentMethod: 'runFromPackage'
+    deploymentMethod: 'zipDeploy'
