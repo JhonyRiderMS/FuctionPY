@@ -1,27 +1,39 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
 variables:
-  packagePath: '$(System.DefaultWorkingDirectory)/function.zip'# zip will be at root
   azureSubscription: 'AuthDevOps'
   functionAppName: 'DevOpsauth32'
   resourceGroupName: 'DevOpsauth32_group'
-  
+  packagePath: '$(Build.ArtifactStagingDirectory)/function.zip'
+
 steps:
-- task: NodeTool@0
+- task: UsePythonVersion@0
   inputs:
-    versionSpec: '18.x'
-  displayName: 'Install Node.js'
+    versionSpec: '3.11'
+  displayName: 'Use Python 3.11'
 
 - script: |
-    npm install
-  displayName: 'Install dependencies'
+    cd functionpy  # adjust this if your function code is in a different folder
+    pip install -r requirements.txt --target="./.python_packages/lib/site-packages"
+  displayName: 'Install Python dependencies'
 
 - script: |
-    zip -r function.zip .
-  displayName: 'Zip Function App'
+    cd functionpy
+    zip -r $(Build.ArtifactStagingDirectory)/function.zip * .[^.]*
+  displayName: 'Zip Python Function App'
+
+- script: |
+    unzip -l $(Build.ArtifactStagingDirectory)/function.zip
+  displayName: 'List zip contents (debug)'
 
 - task: AzureFunctionApp@1
   inputs:
     azureSubscription: $(azureSubscription)
-    appType: 'functionApp'
+    appType: 'functionAppLinux'
     appName: $(functionAppName)
     resourceGroupName: $(resourceGroupName)
     package: $(packagePath)
